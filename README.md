@@ -60,37 +60,19 @@ This ensures reliable customer support while maintaining automation efficiency.
 
 ---
 
-# Repository Structure
-
-```bash
-AI-Customer-Support-Agent/
-│
-├── README.md
-├── workflow.json
-├── architecture.png
-├── demo.mp4
-├── screenshots/
-└── docs/
-```
-
----
-
 # Demo
 
 ## Workflow Screenshot
 
-(Add screenshot here)
+<img width="1856" height="885" alt="image" src="https://github.com/user-attachments/assets/c025fd03-1ff5-4246-97e5-e6f5b3910a06" />
 
-## Demo Video
 
-(Add demo GIF/video here)
 
 ---
 
 # Future Improvements
 
 - Vector database integration
-- Embedding-based semantic retrieval
 - Confidence scoring
 - Multi-document support
 - Retry and error handling
