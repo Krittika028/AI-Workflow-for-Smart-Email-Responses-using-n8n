@@ -1,0 +1,191 @@
+{
+  "name": "AI Agent by kiki",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "578cbe63-8f9e-4375-84cc-249d26153414",
+      "name": "When chat message received",
+      "webhookId": "53740b09-521f-4463-af9f-13987e971807"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are a helpful assistant whose job is to respond to the queries of the users for the company Abi Private Limited. Check the attached google document for all the answers before you answer anything to the user.\n\nYou have access to the Gmail tool, you can send an email to the officials if you do not have answer to a question, make sure you the user email as well so that you can mark them CC."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        344,
+        0
+      ],
+      "id": "e8ba3b6b-6e83-42d1-b7b7-5764856686d1",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        224
+      ],
+      "id": "5724c1a4-0e0e-4c2c-8266-a9dca0deb8bb",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "UMqetSwLqXRog4cW",
+          "name": "Google Gemini(PaLM) Api account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        352,
+        224
+      ],
+      "id": "a8998096-35cd-4d71-89c4-65f104815d44",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Create a document in Google Docs. This Document Contains all the details of the company - Abi Private Limited.",
+        "operation": "get",
+        "documentURL": "https://docs.google.com/document/d/18t5cdFAfePfNOcH5haUTmqLeddOSRJGfFWm54yu4SCM/edit?tab=t.0"
+      },
+      "type": "n8n-nodes-base.googleDocsTool",
+      "typeVersion": 2,
+      "position": [
+        480,
+        224
+      ],
+      "id": "7b1d9ce5-8019-431f-bef9-e662f246d16e",
+      "name": "Get a document in Google Docs",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "XXKyNV5MmndeO1wl",
+          "name": "Google Docs OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "kritti28007@gmail.com",
+        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+        "emailType": "text",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+        "options": {
+          "appendAttribution": false,
+          "ccList": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('CC', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.2,
+      "position": [
+        608,
+        224
+      ],
+      "id": "e0a496d3-a4c9-47f8-9005-057cc5d01d21",
+      "name": "Send a message in Gmail",
+      "webhookId": "c8f78db0-3c15-42d4-975b-6176ec55c0fe",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "w1cQ6E2HTDRlG3Z7",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a document in Google Docs": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message in Gmail": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "executionTimeout": -1,
+    "availableInMCP": false
+  },
+  "versionId": "db78b2b1-a6d3-42dd-b62a-5cbbe90dc0c1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "db2daf182b2476dd43b06f4c462e3994608fabd0801c7648b5eb3f22f21630f3"
+  },
+  "id": "fEqqAz8MwwaYt8aQ",
+  "tags": []
+}
